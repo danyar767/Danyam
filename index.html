@@ -24,7 +24,29 @@
             --action-icon: #fff;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Noto Kufi Arabic', sans-serif; -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; transition: background-color 0.8s ease, color 0.5s ease; }
+        /* --- Updated Global Styles (No Copy/Select) --- */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Noto Kufi Arabic', sans-serif; 
+            -webkit-tap-highlight-color: transparent; 
+            scroll-behavior: smooth; 
+            transition: background-color 0.8s ease, color 0.5s ease;
+            
+            /* Anti-Copy Styles */
+            -webkit-user-select: none; /* Chrome, Safari, Opera */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* IE 10+ */
+            user-select: none; /* Standard */
+            -webkit-touch-callout: none; /* iOS Safari */
+        }
+
+        /* Allow selection in inputs */
+        input, textarea {
+            -webkit-user-select: text !important;
+            user-select: text !important;
+        }
 
         body {
             background-color: var(--bg-color);
@@ -88,16 +110,14 @@
             overflow: hidden;
         }
 
-        /* --- Scroll Down Indicator (UPDATED) --- */
+        /* --- Scroll Down Indicator --- */
         .scroll-down-indicator {
             position: fixed;
             bottom: 30px;
-            right: 30px; /* لای ڕاست */
-            left: auto;  /* لابردنی لە ناوەڕاست */
+            right: 30px; 
+            left: auto;  
             transform: none;
             z-index: 900;
-            
-            /* دیزاینی نوێ: زەرد و زەق */
             background-color: #FFD700;
             color: #000;
             width: 50px;
@@ -109,7 +129,6 @@
             font-size: 1.5rem;
             border: 2px solid white;
             box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
-
             animation: bounceDown 2s infinite;
             opacity: 0;
             transition: opacity 0.5s;
@@ -122,7 +141,43 @@
             40% { transform: translateY(-10px); }
             60% { transform: translateY(-5px); }
         }
-        /* -------------------------------------- */
+
+        /* --- Live Sales Notification (TOP CENTER) --- */
+        .sales-notification {
+            position: fixed;
+            top: -100px; /* Start hidden above */
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(20, 20, 20, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 3px solid #00C6FF;
+            backdrop-filter: blur(10px);
+            padding: 10px 15px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            z-index: 5000;
+            transition: top 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            width: 90%;
+            max-width: 320px;
+            direction: rtl;
+        }
+        .sales-notification.active { top: 20px; }
+        .sales-icon-box {
+            width: 40px; height: 40px;
+            background: rgba(0, 198, 255, 0.15);
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            color: #00C6FF; font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+        .sales-content { display: flex; flex-direction: column; gap: 2px; width: 100%; }
+        .sales-text { font-size: 0.85rem; color: #fff; line-height: 1.4; text-align: right; }
+        .sales-time { font-size: 0.7rem; color: #aaa; text-align: right; }
+        .verified-badge { color: #25D366; font-size: 0.7rem; margin-right: 3px; }
+        /* ------------------------------------- */
 
         /* Custom Alert */
         .custom-alert {
@@ -261,7 +316,6 @@
         .about-text { font-size: 0.85rem; color: var(--text-sec); font-weight: 400; }
         .about-badge::after { content: ''; display: block; width: 50%; height: 2px; background: linear-gradient(90deg, transparent, #FFD700, transparent); margin: 2px auto 0; border-radius: 2px; }
 
-        /* --- UPDATED SLIDER STYLES (Bottom Controls) --- */
         .product-showcase {
             position: relative;
             width: 100%;
@@ -270,7 +324,6 @@
             flex-direction: column;
             gap: 15px;
         }
-        
         .slider-container {
             width: 100%;
             overflow-x: auto;
@@ -284,7 +337,6 @@
             padding: 5px;
         }
         .slider-container::-webkit-scrollbar { display: none; }
-        
         .slide-img { 
             min-width: 100%; 
             height: 200px; 
@@ -293,54 +345,21 @@
             border-radius: 15px;
             transition: transform 0.5s ease;
         }
-        
-        /* The Controls Container */
         .slider-controls {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 8px 20px;
-            border-radius: 50px;
-            width: fit-content;
-            margin: 0 auto;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex; align-items: center; justify-content: center; gap: 20px;
+            background: rgba(255, 255, 255, 0.05); padding: 8px 20px; border-radius: 50px;
+            width: fit-content; margin: 0 auto; border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        
-        /* The Navigation Buttons */
         .slider-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: transparent;
-            border: 1px solid rgba(0, 198, 255, 0.3);
-            color: #fff;
-            font-size: 1.1rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            width: 40px; height: 40px; border-radius: 50%; background: transparent;
+            border: 1px solid rgba(0, 198, 255, 0.3); color: #fff; font-size: 1.1rem;
+            display: flex; justify-content: center; align-items: center; cursor: pointer; transition: all 0.3s ease;
         }
-        .slider-btn:hover {
-            background: #00C6FF;
-            color: #000;
-            box-shadow: 0 0 15px #00C6FF;
-            border-color: #00C6FF;
-        }
-        
-        /* The Center Line */
+        .slider-btn:hover { background: #00C6FF; color: #000; box-shadow: 0 0 15px #00C6FF; border-color: #00C6FF; }
         .slider-divider {
-            width: 2px;
-            height: 25px;
-            background: rgba(255, 255, 255, 0.1);
-            position: relative;
-            border-radius: 2px;
-            box-shadow: 0 0 5px #00C6FF; /* Neon Glow */
-            background-color: #00C6FF;
+            width: 2px; height: 25px; background: rgba(255, 255, 255, 0.1); position: relative;
+            border-radius: 2px; box-shadow: 0 0 5px #00C6FF; background-color: #00C6FF;
         }
-        /* -------------------------- */
 
         .quick-msg-box {
             background: var(--card-bg); padding: 15px; border-radius: 15px; margin-bottom: 25px;
@@ -363,24 +382,11 @@
 
         /* Swipe Hint Animation */
         .swipe-hint {
-            position: absolute;
-            top: 55%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            z-index: 10;
-            opacity: 0.8;
-            animation: swipeHand 2s infinite ease-in-out;
-            background: rgba(0,0,0,0.5);
-            padding: 15px;
-            border-radius: 50%;
-            color: white;
-            font-size: 1.5rem;
-            transition: opacity 0.3s;
+            position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%);
+            pointer-events: none; z-index: 10; opacity: 0.8; animation: swipeHand 2s infinite ease-in-out;
+            background: rgba(0,0,0,0.5); padding: 15px; border-radius: 50%; color: white; font-size: 1.5rem; transition: opacity 0.3s;
         }
-        .reviews-section:hover .swipe-hint, 
-        .reviews-section:active .swipe-hint { opacity: 0; }
-
+        .reviews-section:hover .swipe-hint, .reviews-section:active .swipe-hint { opacity: 0; }
         @keyframes swipeHand {
             0% { transform: translate(-50%, -50%) translateX(20px); opacity: 0; }
             50% { transform: translate(-50%, -50%) translateX(-20px); opacity: 1; }
@@ -424,18 +430,11 @@
         .faq-answer p { padding: 0 20px 20px; color: var(--text-sec); font-size: 0.85rem; line-height: 1.7; text-align: right; }
 
         /* --- Footer Styles --- */
-        .footer { 
-            margin-top: 50px; 
-            padding-bottom: 20px; 
-            display: flex; flex-direction: column; align-items: center; gap: 15px; 
-            text-align: center; 
-        }
+        .footer { margin-top: 50px; padding-bottom: 20px; display: flex; flex-direction: column; align-items: center; gap: 15px; text-align: center; }
         .footer-content {
             display: flex; flex-direction: column; align-items: center; gap: 8px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 15px 25px; border-radius: 20px;
-            backdrop-filter: blur(5px);
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 15px 25px; border-radius: 20px; backdrop-filter: blur(5px);
         }
         .dev-label { font-size: 0.7rem; color: #888; font-family: 'Montserrat', sans-serif; letter-spacing: 1px; }
         .sarkar-tech {
@@ -445,8 +444,7 @@
         }
         .tg-link {
             display: inline-flex; align-items: center; gap: 6px;
-            color: #fff; background: #24A1DE; /* Telegram Blue */
-            padding: 6px 14px; border-radius: 50px;
+            color: #fff; background: #24A1DE; padding: 6px 14px; border-radius: 50px;
             font-size: 0.8rem; text-decoration: none; font-family: 'Montserrat', sans-serif; font-weight: bold;
             box-shadow: 0 4px 10px rgba(36, 161, 222, 0.3); transition: 0.3s;
         }
@@ -520,6 +518,16 @@
         <img id="lightbox-img" src="" alt="Full Image">
     </div>
 
+    <div class="sales-notification" id="salesNotification">
+        <div class="sales-icon-box">
+            <i class="fas fa-shopping-bag"></i>
+        </div>
+        <div class="sales-content">
+            <div class="sales-text" id="salesText"></div>
+            <div class="sales-time" id="salesTime"></div>
+        </div>
+    </div>
+
     <div class="card">
         
         <div class="welcome-marquee">
@@ -542,7 +550,7 @@
             <div class="action-btn" id="musicBtn" onclick="toggleMusic()" title="Music On/Off"><i class="fas fa-music"></i></div>
             <div class="action-btn" onclick="shareOrCopy()" title="شەیرکردن"><i class="fas fa-share-alt"></i></div>
             <div class="action-btn" onclick="toggleQR()" title="QR Code"><i class="fas fa-qrcode"></i></div>
-            <a href="https://maps.google.com" target="_blank" class="action-btn" title="کردنەوەی نەخشە"><i class="fas fa-map-marker-alt"></i></a>
+            <a href="https://maps.app.goo.gl/XYZ123" target="_blank" class="action-btn" title="کردنەوەی نەخشە"><i class="fas fa-map-marker-alt"></i></a>
         </div>
 
         <div class="logo-text reveal">KRN</div>
@@ -591,23 +599,28 @@
                 <span>پاشەکەوتکردنی ناو</span>
                 <i class="fas fa-user-plus"></i>
             </a>
+            
             <a href="tel:07508718631" class="link-btn phone-call">
                 <span>پەیوەندی بکە</span>
                 <i class="fas fa-phone-alt"></i>
             </a>
+
             <a href="https://wa.me/9647508718631?text=سڵاو، دەمەوێت دەربارەی کارەکانتان پرسیار بکەم" class="link-btn whatsapp" target="_blank">
                 <span>واتساپ</span>
                 <i class="fab fa-whatsapp"></i>
             </a>
-            <a href="https://www.facebook.com/share/16WtuWgNn8/" class="link-btn facebook" target="_blank">
+
+            <a href="javascript:void(0)" onclick="openSocialWithMsg('https://www.facebook.com/share/16WtuWgNn8/')" class="link-btn facebook">
                 <span>فەیسبووک</span>
                 <i class="fab fa-facebook-f"></i>
             </a>
-            <a href="https://www.instagram.com/krn_pshdar?igsh=dmx3MDJnd3lnZHFn" class="link-btn instagram" target="_blank">
+
+            <a href="javascript:void(0)" onclick="openSocialWithMsg('https://www.instagram.com/krn_pshdar')" class="link-btn instagram">
                 <span>ئینستاگرام</span>
                 <i class="fab fa-instagram"></i>
             </a>
-            <a href="https://www.tiktok.com/@krn_pshdar?_r=1&_t=ZS-91j9NjVeymr" class="link-btn tiktok" target="_blank">
+
+            <a href="javascript:void(0)" onclick="openSocialWithMsg('https://www.tiktok.com/@krn_pshdar')" class="link-btn tiktok">
                 <span>تیکتۆک</span>
                 <i class="fab fa-tiktok"></i>
             </a>
@@ -928,14 +941,14 @@
             <h3 class="faq-title">پرسیارەکان</h3>
             <div class="faq-item">
                 <div class="faq-question">
-                    <span>دووکانتان لەکوێیە،؟</span>
+                    <span>ناونێشانی دووکانەکەتان لەکوێیە،؟</span>
                     <div class="faq-icon"><i class="fas fa-chevron-down"></i></div>
                 </div>
                 <div class="faq-answer"><p>سڵاو بەڕێز ناونێشانی دووکانی ئێمە ناوبازاڕی قەڵادزێ جادەی ئاسایشی کۆن بەرانبەر ڕەوزەی ناوبازاڕ</p></div>
             </div>
             <div class="faq-item">
                 <div class="faq-question">
-                    <span>چۆن داوای شتێک بکەم،؟</span>
+                    <span>چۆن داواکاری تۆمار بکەم؟</span>
                     <div class="faq-icon"><i class="fas fa-chevron-down"></i></div>
                 </div>
                 <div class="faq-answer"><p>لە ڕێگەی واتساپ یان پەیوەندی تەلەفۆنییەوە دەتوانیت پەیوەندیمان پێوە بکەیت.</p></div>
@@ -945,7 +958,7 @@
                     <span>گەیاندنتان هەیە،؟</span>
                     <div class="faq-icon"><i class="fas fa-chevron-down"></i></div>
                 </div>
-                <div class="faq-answer"><p>بەڵی بەڕێز گەیاندنمان هەیە بۆسەرجەم شارەکانی کوردستان و تابەردەرگای ماڵەکەت</p></div>
+                <div class="faq-answer"><p>سڵاو بەڕێز گەیاندنمان هەیە بۆسەرجەم شارەکان</p></div>
             </div>
         </div>
 
@@ -997,6 +1010,12 @@
                 setTimeout(() => {
                     scrollHint.classList.add('show');
                 }, 1000);
+
+                // --- NEW DELAY LOGIC (25 SECONDS) ---
+                // Start sales notifications after loading
+                setTimeout(() => {
+                    initSalesNotifications();
+                }, 25000); // 25 Seconds delay
             }
         }
 
@@ -1262,6 +1281,95 @@
         }
 
         function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+        // --- Smart Copy Message Logic (For Social Links) ---
+        function openSocialWithMsg(url) {
+            const autoMessage = "سڵاو، دەمەوێت دەربارەی کارەکانتان پرسیار بکەم";
+            navigator.clipboard.writeText(autoMessage).then(() => {
+                const toast = document.getElementById('toastMsg');
+                toast.innerText = "نامەکە کۆپی کرا! لە چات پەیستی بکە ✅";
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    window.open(url, '_blank');
+                }, 1500);
+            }).catch(err => {
+                window.open(url, '_blank');
+            });
+        }
+
+        // --- Live Sales Notification System (Logic Updated for Gender) ---
+        const femaleNames = [
+            "سارا", "نیان", "سۆما", "لەنیا", "ڕۆژین", "کەژاڵ", "هێلین", "شیلان", 
+            "ئاڵا", "شنۆ", "تارا", "چیمەن", "نەسرین", "لۆنا", "پەیمان", "لانە", 
+            "شۆخان", "سازان", "ژیلیا", "سروە", "ئەوین", "ڕۆژان", "دڵنیا", "هەنسک"
+        ];
+        
+        const maleNames = [
+            "ئەحمەد", "عەلی", "کاروان", "هەرێم", "محەمەد", "ڕێبین", "دیاری", "ئارام",
+            "سەردار", "بەڵێن", "زانا", "هێمن", "ڕەوا", "بەختیار", "ئاکۆ", "سۆران",
+            "عومەر", "هیوا", "دڵشاد", "کامەران", "بارزان", "سەڵاح", "نەوزاد", "مستەفا"
+        ];
+        
+        const cities = [
+            "لە سلێمانی", "لە هەولێر", "لە دهۆک", "لە کەرکوک", "لە هەڵەبجە", 
+            "لە ڕانیە", "لە قەڵادزێ", "لە کەلار", "لە سۆران", "لە چەمچەماڵ",
+            "لە زاخۆ", "لە کۆیە", "لە دەربەندیخان", "لە سەیدسادق", "لە کفری",
+            "لە ئاکرێ", "لە شەقڵاوە", "لە حاجیاوا", "لە دوکان", "لە پێنجوێن"
+        ];
+        
+        const actions = [
+            "شامپۆی قژی کڕی", "غەنەی ڕەشی داواکرد", "سێتی غەنەی برد", "مەحجونی ددانی کڕی", 
+            "شامپۆی منداڵانی کڕی", "سدری ئەسڵی داواکرد", "غەنەی ماڕۆنی کڕی", "غەنەی قاوەیی برد",
+            "داواکارییەکەی گەیشت", "پاکێجی چارەسەری قژی کڕی"
+        ];
+
+        const times = ["ئێستا", "پێش ١ خولەک", "پێش ٢ خولەک", "پێش ٥ خولەک", "پێش ١٠ خولەک", "پێش کەمێک"];
+
+        function showRandomNotification() {
+            const notification = document.getElementById('salesNotification');
+            const textEl = document.getElementById('salesText');
+            const timeEl = document.getElementById('salesTime');
+            
+            // Randomly Select Data
+            const randomAction = actions[Math.floor(Math.random() * actions.length)];
+            const randomCity = cities[Math.floor(Math.random() * cities.length)];
+            const randomTime = times[Math.floor(Math.random() * times.length)];
+            
+            let randomName = "";
+            
+            // Gender Logic
+            if (randomAction.includes("غەنە")) {
+                randomName = femaleNames[Math.floor(Math.random() * femaleNames.length)];
+            } else {
+                const allNames = femaleNames.concat(maleNames);
+                randomName = allNames[Math.floor(Math.random() * allNames.length)];
+            }
+            
+            // Construct Message
+            textEl.innerHTML = `<strong>${randomName}</strong> ${randomCity} <br> ${randomAction} <i class="fas fa-check-circle verified-badge"></i>`;
+            timeEl.innerText = randomTime;
+            
+            // Show
+            notification.classList.add('active');
+            
+            // Hide after 4 seconds
+            setTimeout(() => {
+                notification.classList.remove('active');
+            }, 4000);
+        }
+
+        function initSalesNotifications() {
+            showRandomNotification();
+            setInterval(() => {
+                showRandomNotification();
+            }, Math.floor(Math.random() * (15000 - 8000 + 1) + 8000));
+        }
+
+        // --- Prevent Right Click and Image Dragging ---
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.ondragstart = function() { return false; };
+
     </script>
 </body>
 </html>
