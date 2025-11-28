@@ -289,7 +289,6 @@
             gap: 15px; background: var(--action-bg); padding: 12px 20px;
             border-radius: 50px; border: 1px solid rgba(255, 255, 255, 0.1); width: fit-content;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            /* Ensure it stays on top */
             z-index: 5;
         }
         .action-btn { 
@@ -619,7 +618,7 @@
 
         <div class="smart-greeting" id="smartGreeting"></div>
 
-        <div class="profile-img-container reveal" id="profileContainer">
+        <div class="profile-img-container" id="profileContainer">
             <img src="me.jpg" alt="Kamaran Pshdari" class="profile-img default-img" onerror="this.src='https://via.placeholder.com/150'">
             <img src="logo2.jpg" alt="Music Logo" class="profile-img music-img" onerror="this.src='https://via.placeholder.com/150'">
             
@@ -629,20 +628,20 @@
             </div>
         </div>
 
-        <div class="action-bar reveal" id="actionBar">
+        <div class="action-bar" id="actionBar">
             <div class="action-btn" id="musicBtn" onclick="toggleMusic()" title="Music On/Off"><i class="fas fa-music"></i></div>
             <div class="action-btn" onclick="shareOrCopy()" title="شەیرکردن"><i class="fas fa-share-alt"></i></div>
             <div class="action-btn" onclick="toggleQR()" title="QR Code"><i class="fas fa-qrcode"></i></div>
             <a href="https://maps.app.goo.gl/XYZ123" target="_blank" class="action-btn" title="کردنەوەی نەخشە"><i class="fas fa-map-marker-alt"></i></a>
         </div>
 
-        <div class="logo-text reveal">KRN</div>
+        <div class="logo-text">KRN</div>
         
-        <div class="name-wrapper reveal">
+        <div class="name-wrapper">
             <span class="name-text" id="typing-name"></span>
         </div>
 
-        <div class="sub-text-wrapper reveal">
+        <div class="sub-text-wrapper">
             <span class="cursor"></span><span class="rotating-text" id="rotatingText"></span>
         </div>
 
