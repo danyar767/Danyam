@@ -1593,6 +1593,66 @@
         document.addEventListener('contextmenu', event => event.preventDefault());
         document.ondragstart = function() { return false; };
 
+        // --- SHAKE TO CHAT (تایبەتمەندی هەژاندن بۆ چات) ---
+        let shakeThreshold = 800; // هەستیاری جوڵە
+        let lastX = 0, lastY = 0, lastZ = 0;
+        let lastShakeUpdate = 0;
+        let isShakeCoolingDown = false; // بۆ ئەوەی چەند جارێک پێکەوە نەکرێتەوە
+
+        window.addEventListener('devicemotion', (event) => {
+            // ئەگەر لە کاتی جێبەجێکردن دابوو، هیچ مەکە
+            if(isShakeCoolingDown) return;
+
+            let acceleration = event.accelerationIncludingGravity;
+            if(!acceleration) return;
+
+            let curTime = new Date().getTime();
+
+            // پشکنین هەموو 100 میلی سانیەیەک
+            if ((curTime - lastShakeUpdate) > 100) {
+                let diffTime = curTime - lastShakeUpdate;
+                lastShakeUpdate = curTime;
+
+                let x = acceleration.x;
+                let y = acceleration.y;
+                let z = acceleration.z;
+
+                let speed = Math.abs(x + y + z - lastX - lastY - lastZ) / diffTime * 10000;
+
+                if (speed > shakeThreshold) {
+                    performShakeAction();
+                }
+
+                lastX = x;
+                lastY = y;
+                lastZ = z;
+            }
+        });
+
+        function performShakeAction() {
+            isShakeCoolingDown = true;
+            
+            // 1. لێدانی ویڕە (Vibration)
+            if(navigator.vibrate) navigator.vibrate([100, 50, 100]);
+
+            // 2. نیشاندانی نامە (Toast)
+            const toast = document.getElementById('toastMsg');
+            toast.innerText = "کردنەوەی چات... 📲";
+            toast.classList.add('show');
+
+            // 3. تەقاندنی کۆنفێتی
+            if(typeof fireConfetti === 'function') fireConfetti();
+
+            // 4. کردنەوەی واتساپ دوای 1.5 سانیە
+            setTimeout(() => {
+                toast.classList.remove('show');
+                window.location.href = "https://wa.me/9647508718631?text=سڵاو، لە ڕێگەی هەژاندنی مۆبایلەوە (Shake) پەیوەندیم کرد 👋";
+                
+                // دووبارە چالاک کردنەوەی تایبەتمەندیەکە دوای 3 سانیە
+                setTimeout(() => { isShakeCoolingDown = false; }, 3000);
+            }, 1500);
+        }
+
     </script>
 </body>
 </html>
