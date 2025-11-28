@@ -51,12 +51,11 @@
             background-color: var(--bg-color);
             min-height: 100vh;
             display: flex; justify-content: center; align-items: flex-start;
-            /* Added padding-top to prevent sales notification overlap */
             padding: 70px 15px 40px 15px; 
             color: var(--text-color); overflow-x: hidden; position: relative;
         }
 
-        /* --- Confetti Canvas (New) --- */
+        /* --- Confetti Canvas --- */
         #confetti-canvas {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none; z-index: 99999;
@@ -164,7 +163,6 @@
             font-size: 1.8rem;
             color: #fff;
             filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
-            /* Changed transition to be sharper */
             transition: top 0.4s ease-out, left 0.4s ease-out;
             z-index: 9992;
             animation: fingerTap 1s infinite;
@@ -229,7 +227,6 @@
             max-width: 320px;
             direction: rtl;
         }
-        /* Adjusted Top Position */
         .sales-notification.active { top: 10px; }
         
         .sales-icon-box {
@@ -292,6 +289,8 @@
             gap: 15px; background: var(--action-bg); padding: 12px 20px;
             border-radius: 50px; border: 1px solid rgba(255, 255, 255, 0.1); width: fit-content;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            /* Ensure it stays on top */
+            z-index: 5;
         }
         .action-btn { 
             font-size: 1.2rem; color: var(--action-icon); cursor: pointer; transition: 0.3s; 
@@ -1083,7 +1082,8 @@
             if (index < textToType.length) { 
                 textElement.innerHTML += textToType.charAt(index); 
                 index++; 
-                setTimeout(typeWriter, 200); 
+                // Increased speed to 100ms
+                setTimeout(typeWriter, 100); 
             }
         }
 
@@ -1093,7 +1093,8 @@
             
             if (!preloader.classList.contains('hide-preloader')) {
                 preloader.classList.add('hide-preloader');
-                setTimeout(typeWriter, 800); 
+                // Start typing almost immediately
+                setTimeout(typeWriter, 100); 
                 // Show scroll hint
                 setTimeout(() => {
                     scrollHint.classList.add('show');
@@ -1112,10 +1113,12 @@
         }
 
         window.addEventListener('load', () => {
-            setTimeout(finishLoading, 3000); 
+            // Reduced initial loading time to 2000ms (2 seconds)
+            setTimeout(finishLoading, 2000); 
         });
 
-        setTimeout(finishLoading, 5000);
+        // Fallback
+        setTimeout(finishLoading, 2500);
         // -------------------------
 
         // --- Rotating Text Logic ---
@@ -1486,7 +1489,7 @@
                 // IMPORTANT: Force the screen to scroll to the element being highlighted
                 step.el.scrollIntoView({behavior: "smooth", block: "center"});
                 
-                // Wait a tiny bit for scroll to finish/start
+                // Wait for scroll to finish (Increased delay for long scrolls)
                 setTimeout(() => {
                     const rect = step.el.getBoundingClientRect();
                     
@@ -1497,7 +1500,7 @@
                     finger.style.top = `${topPos}px`;
                     finger.style.left = `${leftPos}px`;
 
-                    // 2. Wait for finger to arrive (300ms), then activate button + tooltip
+                    // 2. Wait for finger to arrive (400ms), then activate button + tooltip
                     setTimeout(() => {
                         step.el.classList.add('guide-highlight');
 
@@ -1518,7 +1521,7 @@
                         }, 1200); 
 
                     }, 400); // Wait for transition
-                }, 400); // Wait for Scroll
+                }, 800); // Wait 800ms for Scroll
             }
 
             showStep();
