@@ -35,14 +35,13 @@
             transition: background-color 0.8s ease, color 0.5s ease;
             
             /* Anti-Copy Styles */
-            -webkit-user-select: none; /* Chrome, Safari, Opera */
-            -moz-user-select: none; /* Firefox */
-            -ms-user-select: none; /* IE 10+ */
-            user-select: none; /* Standard */
-            -webkit-touch-callout: none; /* iOS Safari */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
         }
 
-        /* Allow selection in inputs */
         input, textarea {
             -webkit-user-select: text !important;
             user-select: text !important;
@@ -53,6 +52,12 @@
             min-height: 100vh;
             display: flex; justify-content: center; align-items: flex-start;
             padding: 40px 15px; color: var(--text-color); overflow-x: hidden; position: relative;
+        }
+
+        /* --- Confetti Canvas (New) --- */
+        #confetti-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 99999;
         }
 
         /* --- 1. PRELOADER --- */
@@ -142,10 +147,67 @@
             60% { transform: translateY(-5px); }
         }
 
+        /* --- Guide / Tutorial Animation Styles (REFINED) --- */
+        .guide-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 9990; 
+            pointer-events: none; 
+            display: none; 
+        }
+        .guide-container.active { display: block; }
+
+        .guide-finger {
+            position: absolute;
+            font-size: 1.8rem;
+            color: #fff;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
+            transition: top 0.5s cubic-bezier(0.25, 1, 0.5, 1), left 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            z-index: 9992;
+            animation: fingerTap 1s infinite;
+        }
+        @keyframes fingerTap {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-5px) scale(0.9); }
+        }
+
+        .guide-tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.9);
+            color: #FFD700; 
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            border: 1px solid #FFD700;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 9991;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.6);
+            transform: translateX(-50%);
+        }
+        .guide-tooltip.show { opacity: 1; }
+        .guide-tooltip::before {
+            content: ''; position: absolute; top: -5px; left: 50%; transform: translateX(-50%);
+            border-width: 0 5px 5px 5px; border-style: solid; border-color: transparent transparent #FFD700 transparent;
+        }
+
+        /* Active Button Highlight */
+        .action-btn.guide-highlight {
+            transform: scale(1.3) !important;
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 25px currentColor;
+        }
+        .action-btn:nth-child(1).guide-highlight { color: #ff00cc !important; }
+        .action-btn:nth-child(2).guide-highlight { color: #00C6FF !important; }
+        .action-btn:nth-child(3).guide-highlight { color: #FFD700 !important; }
+        .action-btn:nth-child(4).guide-highlight { color: #34A853 !important; }
+
         /* --- Live Sales Notification (TOP CENTER) --- */
         .sales-notification {
             position: fixed;
-            top: -100px; /* Start hidden above */
+            top: -100px; 
             left: 50%;
             transform: translateX(-50%);
             background: rgba(20, 20, 20, 0.95);
@@ -177,7 +239,6 @@
         .sales-text { font-size: 0.85rem; color: #fff; line-height: 1.4; text-align: right; }
         .sales-time { font-size: 0.7rem; color: #aaa; text-align: right; }
         .verified-badge { color: #25D366; font-size: 0.7rem; margin-right: 3px; }
-        /* ------------------------------------- */
 
         /* Custom Alert */
         .custom-alert {
@@ -369,7 +430,6 @@
         .quick-msg-btn { background: #25D366; color: white; padding: 10px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; transition: 0.3s; }
         .quick-msg-btn:hover { background: #1ebc57; }
 
-        /* REVIEWS SECTION UPDATES */
         .reviews-section { margin-bottom: 35px; text-align: right; position: relative; }
         .reviews-title { font-size: 1rem; color: var(--text-sec); margin-bottom: 15px; padding-right: 10px; border-right: 3px solid #00C6FF; }
         .reviews-scroll { display: flex; overflow-x: auto; gap: 15px; padding-bottom: 10px; scrollbar-width: none; }
@@ -380,7 +440,6 @@
         .review-text { font-size: 0.8rem; color: var(--text-sec); line-height: 1.5; }
         .review-author { font-size: 0.75rem; color: var(--accent); font-weight: bold; text-align: left; margin-top: 5px; }
 
-        /* Swipe Hint Animation */
         .swipe-hint {
             position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%);
             pointer-events: none; z-index: 10; opacity: 0.8; animation: swipeHand 2s infinite ease-in-out;
@@ -494,6 +553,13 @@
         <i class="fas fa-chevron-down"></i>
     </div>
 
+    <div class="guide-container" id="guideContainer">
+        <div class="guide-finger" id="guideFinger"><i class="fas fa-hand-pointer"></i></div>
+        <div class="guide-tooltip" id="guideTooltip">...</div>
+    </div>
+
+    <canvas id="confetti-canvas"></canvas>
+
     <div class="background-orb orb-1"></div>
     <div class="background-orb orb-2"></div>
 
@@ -546,7 +612,7 @@
             </div>
         </div>
 
-        <div class="action-bar reveal">
+        <div class="action-bar reveal" id="actionBar">
             <div class="action-btn" id="musicBtn" onclick="toggleMusic()" title="Music On/Off"><i class="fas fa-music"></i></div>
             <div class="action-btn" onclick="shareOrCopy()" title="شەیرکردن"><i class="fas fa-share-alt"></i></div>
             <div class="action-btn" onclick="toggleQR()" title="QR Code"><i class="fas fa-qrcode"></i></div>
@@ -1011,11 +1077,15 @@
                     scrollHint.classList.add('show');
                 }, 1000);
 
-                // --- NEW DELAY LOGIC (25 SECONDS) ---
-                // Start sales notifications after loading
+                // --- 1. Start Guide Tutorial (After 5 Seconds) ---
+                setTimeout(() => {
+                    startGuideTour();
+                }, 5000);
+
+                // --- 2. Start Live Sales Notifications (After 25 Seconds) ---
                 setTimeout(() => {
                     initSalesNotifications();
-                }, 25000); // 25 Seconds delay
+                }, 25000); 
             }
         }
 
@@ -1298,7 +1368,7 @@
             });
         }
 
-        // --- Live Sales Notification System (Logic Updated for Gender) ---
+        // --- Live Sales Notification System ---
         const femaleNames = [
             "سارا", "نیان", "سۆما", "لەنیا", "ڕۆژین", "کەژاڵ", "هێلین", "شیلان", 
             "ئاڵا", "شنۆ", "تارا", "چیمەن", "نەسرین", "لۆنا", "پەیمان", "لانە", 
@@ -1331,14 +1401,12 @@
             const textEl = document.getElementById('salesText');
             const timeEl = document.getElementById('salesTime');
             
-            // Randomly Select Data
             const randomAction = actions[Math.floor(Math.random() * actions.length)];
             const randomCity = cities[Math.floor(Math.random() * cities.length)];
             const randomTime = times[Math.floor(Math.random() * times.length)];
             
             let randomName = "";
             
-            // Gender Logic
             if (randomAction.includes("غەنە")) {
                 randomName = femaleNames[Math.floor(Math.random() * femaleNames.length)];
             } else {
@@ -1346,14 +1414,11 @@
                 randomName = allNames[Math.floor(Math.random() * allNames.length)];
             }
             
-            // Construct Message
             textEl.innerHTML = `<strong>${randomName}</strong> ${randomCity} <br> ${randomAction} <i class="fas fa-check-circle verified-badge"></i>`;
             timeEl.innerText = randomTime;
             
-            // Show
             notification.classList.add('active');
             
-            // Hide after 4 seconds
             setTimeout(() => {
                 notification.classList.remove('active');
             }, 4000);
@@ -1365,6 +1430,164 @@
                 showRandomNotification();
             }, Math.floor(Math.random() * (15000 - 8000 + 1) + 8000));
         }
+
+        // --- NEW: GUIDE / TUTORIAL SYSTEM (Interactive) ---
+        function startGuideTour() {
+            const actionBar = document.getElementById('actionBar');
+            if (!actionBar) return;
+            
+            // Buttons order: Music(0), Share(1), QR(2), Map(3)
+            // Visual Order (Right to Left): Map -> QR -> Share -> Music
+            const buttons = actionBar.children; 
+            
+            const steps = [
+                { el: buttons[3], text: "لۆکەیشن" }, 
+                { el: buttons[2], text: "بارکۆد" },  
+                { el: buttons[1], text: "شەیرکردن" }, 
+                { el: buttons[0], text: "مۆسیقا" }   
+            ];
+
+            const guideContainer = document.getElementById('guideContainer');
+            const finger = document.getElementById('guideFinger');
+            const tooltip = document.getElementById('guideTooltip');
+            
+            guideContainer.classList.add('active');
+
+            let currentStep = 0;
+
+            function showStep() {
+                if (currentStep >= steps.length) {
+                    guideContainer.classList.remove('active');
+                    return;
+                }
+
+                const step = steps[currentStep];
+                const rect = step.el.getBoundingClientRect();
+                
+                // 1. Move Finger to position
+                const topPos = rect.top + window.scrollY + (rect.height / 2) - 10; 
+                const leftPos = rect.left + (rect.width / 2) - 10; 
+
+                finger.style.top = `${topPos}px`;
+                finger.style.left = `${leftPos}px`;
+
+                // 2. Wait for finger to arrive (300ms), then activate button + tooltip
+                setTimeout(() => {
+                    // Activate Button Effect
+                    step.el.classList.add('guide-highlight');
+
+                    // Show Tooltip
+                    const tooltipTop = rect.bottom + window.scrollY + 8;
+                    const tooltipLeft = rect.left + (rect.width / 2); // Center horizontally
+                    
+                    tooltip.style.top = `${tooltipTop}px`;
+                    tooltip.style.left = `${tooltipLeft}px`;
+                    tooltip.innerText = step.text;
+                    tooltip.classList.add('show');
+
+                    // 3. Hold for 1.2s, then reset and move
+                    setTimeout(() => {
+                        step.el.classList.remove('guide-highlight');
+                        tooltip.classList.remove('show');
+                        currentStep++;
+                        setTimeout(showStep, 400); 
+                    }, 1200); 
+
+                }, 300);
+            }
+
+            showStep();
+        }
+
+        // --- SMART INTERACTION: CONFETTI & VIBRATION ---
+        
+        // 1. Vibration Function (Haptic Feedback)
+        function triggerVibration() {
+            if (navigator.vibrate) {
+                navigator.vibrate(40); // 40ms pulse
+            }
+        }
+
+        // Add vibration to ALL buttons
+        const allButtons = document.querySelectorAll('button, .action-btn, .link-btn, .slide-img');
+        allButtons.forEach(btn => {
+            btn.addEventListener('click', triggerVibration);
+        });
+
+        // 2. Confetti Logic (Lightweight)
+        const confettiCanvas = document.getElementById('confetti-canvas');
+        const ctx = confettiCanvas.getContext('2d');
+        confettiCanvas.width = window.innerWidth;
+        confettiCanvas.height = window.innerHeight;
+
+        let particles = [];
+        const colors = ['#00C6FF', '#FFD700', '#ff00cc', '#ffffff', '#25D366'];
+
+        function createParticles() {
+            for (let i = 0; i < 100; i++) {
+                particles.push({
+                    x: window.innerWidth / 2, // Start from center
+                    y: window.innerHeight / 2,
+                    w: Math.random() * 10 + 5,
+                    h: Math.random() * 10 + 5,
+                    vx: (Math.random() - 0.5) * 20, // Explode out
+                    vy: (Math.random() - 0.5) * 20,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    speed: Math.random() * 0.1 + 0.9,
+                    rotation: Math.random() * 360
+                });
+            }
+        }
+
+        function drawConfetti() {
+            ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+            
+            particles.forEach((p, index) => {
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.rotation * Math.PI / 180);
+                ctx.fillStyle = p.color;
+                ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+                ctx.restore();
+
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.5; // Gravity
+                p.vx *= 0.96; // Air resistance
+                p.vy *= 0.96;
+                p.rotation += 5;
+
+                if (p.y > window.innerHeight) particles.splice(index, 1);
+            });
+
+            if (particles.length > 0) requestAnimationFrame(drawConfetti);
+        }
+
+        function fireConfetti() {
+            createParticles();
+            drawConfetti();
+        }
+
+        // Link Confetti to specific actions
+        // Whatsapp Button
+        const waBtn = document.querySelector('.whatsapp');
+        if(waBtn) waBtn.addEventListener('click', fireConfetti);
+        
+        // Share Button (index 1 in action bar)
+        const shareBtn = document.querySelectorAll('.action-btn')[1]; 
+        if(shareBtn) shareBtn.addEventListener('click', fireConfetti);
+
+        // Copy Link function wrapper
+        const originalCopyLink = copyLink;
+        copyLink = function() {
+            originalCopyLink();
+            fireConfetti();
+        };
+        
+        window.addEventListener('resize', () => {
+            confettiCanvas.width = window.innerWidth;
+            confettiCanvas.height = window.innerHeight;
+        });
 
         // --- Prevent Right Click and Image Dragging ---
         document.addEventListener('contextmenu', event => event.preventDefault());
